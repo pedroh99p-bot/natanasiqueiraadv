@@ -49,6 +49,10 @@
             --glass-border-strong: rgba(201, 164, 106, 0.15);
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: #071427;
             color: #F6F8FF;
@@ -97,12 +101,14 @@
         
         /* Top Roller */
         @keyframes roller {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
         }
         .animate-roller {
             display: inline-flex;
             animation: roller 35s linear infinite;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
         }
 
         /* Glassmorphism Classes */
@@ -165,37 +171,36 @@
             50% { transform: scale(1.03); box-shadow: 0 0 35px rgba(201,164,106,0.6); }
             100% { transform: scale(1); box-shadow: 0 0 15px rgba(201,164,106,0.3); }
         }
-        .cta-glow { animation: dynamic-pulse 3s infinite; will-change: transform, box-shadow; }
+        .cta-glow { animation: dynamic-pulse 3s infinite; }
 
         @keyframes dynamic-wpp-pulse {
             0% { transform: scale(1); box-shadow: 0 0 15px rgba(37,211,102,0.3); }
             50% { transform: scale(1.08); box-shadow: 0 0 35px rgba(37,211,102,0.6); }
             100% { transform: scale(1); box-shadow: 0 0 15px rgba(37,211,102,0.3); }
         }
-        .wpp-glow { animation: dynamic-wpp-pulse 2.5s infinite; will-change: transform, box-shadow; }
+        .wpp-glow { animation: dynamic-wpp-pulse 2.5s infinite; }
         
         @keyframes insta-glow {
             0% { box-shadow: 0 0 15px rgba(225,48,108,0.3); transform: scale(1); }
             50% { box-shadow: 0 0 30px rgba(225,48,108,0.6); transform: scale(1.05); }
             100% { box-shadow: 0 0 15px rgba(225,48,108,0.3); transform: scale(1); }
         }
-        .insta-glow { animation: insta-glow 3s infinite; will-change: transform, box-shadow; }
+        .insta-glow { animation: insta-glow 3s infinite; }
 
         @keyframes seq-flash {
             0% { background-color: rgba(201, 164, 106, 0.1); border-color: rgba(201, 164, 106, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transform: translateY(0) scale(1); }
             15% { background-color: rgba(201, 164, 106, 0.35); border-color: rgba(201, 164, 106, 1); box-shadow: 0 0 25px rgba(201,164,106,0.8); transform: translateY(-3px) scale(1.03); }
             30%, 100% { background-color: rgba(201, 164, 106, 0.1); border-color: rgba(201, 164, 106, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transform: translateY(0) scale(1); }
         }
-        .seq-glow-1 { animation: seq-flash 3.6s infinite 0s; will-change: transform, background-color, box-shadow; }
-        .seq-glow-2 { animation: seq-flash 3.6s infinite 1.2s; will-change: transform, background-color, box-shadow; }
-        .seq-glow-3 { animation: seq-flash 3.6s infinite 2.4s; will-change: transform, background-color, box-shadow; }
+        .seq-glow-1 { animation: seq-flash 3.6s infinite 0s; }
+        .seq-glow-2 { animation: seq-flash 3.6s infinite 1.2s; }
+        .seq-glow-3 { animation: seq-flash 3.6s infinite 2.4s; }
 
         /* Accordion Base Styles (Otimizado para evitar lag) */
         .accordion-content {
             display: grid;
             grid-template-rows: 0fr;
             transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: grid-template-rows;
         }
         .accordion-content > div { overflow: hidden; }
         .accordion-step.active .accordion-content { grid-template-rows: 1fr; }
@@ -211,8 +216,8 @@
         }
 
         /* Reveal Animations */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal { opacity: 0; transform: translate3d(0, 32px, 0); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translate3d(0, 0, 0); }
 
         @media (prefers-reduced-motion: reduce) {
             .reveal { transition: none; opacity: 1; transform: none; }
@@ -251,6 +256,20 @@
                 justify-content: center;
             }
         }
+
+        @media (max-width: 767px) {
+            .glass {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                box-shadow: 0 6px 22px rgba(0, 0, 0, 0.2);
+            }
+
+            .glass-strong {
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.26);
+            }
+        }
     </style>
 </head>
 <body class="antialiased relative selection:bg-gold selection:text-navy-base">
@@ -281,9 +300,9 @@
 
     <!-- Glowing Orbs (Fixos) -->
     <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none flex flex-col items-center">
-        <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#0A1F3D] rounded-full blur-[120px] opacity-50"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#0A1F3D] rounded-full blur-[120px] opacity-50"></div>
-        <div class="absolute top-[40%] left-[60%] w-[30%] h-[30%] bg-[#C9A46A] rounded-full blur-[150px] opacity-10"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#0A1F3D] rounded-full blur-[70px] md:blur-[120px] opacity-50"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#0A1F3D] rounded-full blur-[70px] md:blur-[120px] opacity-50"></div>
+        <div class="absolute top-[40%] left-[60%] w-[30%] h-[30%] bg-[#C9A46A] rounded-full blur-[80px] md:blur-[150px] opacity-10"></div>
     </div>
 
     <!-- Header Wrapper -->
@@ -335,7 +354,7 @@
     <div id="mobile-menu-backdrop" class="fixed inset-0 bg-navy-base/80 backdrop-blur-sm z-[45] hidden opacity-0 transition-opacity duration-300"></div>
 
     <!-- Universal Side Menu Drawer -->
-    <div id="mobile-menu" class="fixed inset-y-0 right-0 w-[80vw] sm:w-[350px] md:w-[400px] bg-navy-sec/95 backdrop-blur-3xl border-l border-glass-border z-[50] transform translate-x-full transition-transform duration-300 flex flex-col pt-32 px-8 pb-8 h-[100dvh] overflow-y-auto shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
+    <div id="mobile-menu" class="fixed inset-y-0 right-0 w-[80vw] sm:w-[350px] md:w-[400px] bg-navy-sec/95 backdrop-blur-xl md:backdrop-blur-3xl border-l border-glass-border z-[50] transform translate-x-full transition-transform duration-300 flex flex-col pt-32 px-8 pb-8 h-[100dvh] overflow-y-auto shadow-[-14px_0_34px_rgba(0,0,0,0.45)] md:shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
         <nav class="flex flex-col gap-5 w-full mt-2">
             <a href="#sobre" class="text-lg text-textMain font-medium mobile-link hover:text-gold transition-colors border-b border-glass-border/40 pb-3">Nossa Visão</a>
             <a href="#como-funciona" class="text-lg text-textMain font-medium mobile-link hover:text-gold transition-colors border-b border-glass-border/40 pb-3">A Jornada do Cliente</a>
@@ -356,20 +375,20 @@
     </div>
 
     <!-- Hero Section -->
-    <section id="inicio" class="relative pt-32 lg:pt-40 px-6 min-h-[100svh] flex flex-col justify-end bg-gradient-to-b from-navy-sec/80 to-navy-base overflow-hidden">
-        <div class="absolute top-1/4 left-0 w-[50%] h-[50%] bg-gold/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
+    <section id="inicio" class="relative pt-28 md:pt-32 lg:pt-40 px-6 min-h-[100svh] flex flex-col justify-start md:justify-end bg-gradient-to-b from-navy-sec/80 to-navy-base overflow-hidden">
+        <div class="absolute top-1/4 left-0 w-[50%] h-[50%] bg-gold/5 blur-[70px] md:blur-[120px] rounded-full pointer-events-none z-0"></div>
 
-        <div class="max-w-7xl mx-auto w-full relative z-20 flex flex-col md:flex-row items-center md:items-end justify-between flex-1 gap-8 h-full">
-            <div class="w-full md:w-[55%] lg:w-[60%] flex flex-col items-center md:items-start text-center md:text-left z-30 pt-8 pb-8 md:pb-24">
-                <h1 class="font-heading text-[2.5rem] leading-[1.1] sm:text-5xl md:text-6xl lg:text-[5rem] font-bold md:leading-[1.05] mb-6 reveal drop-shadow-2xl">
+        <div class="max-w-7xl mx-auto w-full relative z-20 flex flex-col md:flex-row items-center md:items-end justify-between flex-1 gap-4 md:gap-8 h-full">
+            <div class="w-full md:w-[55%] lg:w-[60%] flex flex-col items-center md:items-start text-center md:text-left z-30 pt-4 pb-4 md:pt-8 md:pb-24">
+                <h1 class="font-heading text-[2.2rem] leading-[1.08] sm:text-5xl md:text-6xl lg:text-[5rem] font-bold md:leading-[1.05] mb-5 md:mb-6 reveal drop-shadow-2xl">
                     Chega de abusos.<br>Nós exigimos os <span class="text-gold italic pr-1 md:pr-2">seus direitos.</span>
                 </h1>
                 
-                <p class="text-base sm:text-lg md:text-xl text-textMuted mb-8 max-w-xl leading-relaxed reveal" style="transition-delay: 200ms;">
-                    Você não precisa arcar com os prejuízos causados por bancos, companhias aéreas ou planos de saúde. Atuamos de forma implacável para garantir a sua indenização e a reparação que você merece.
+                <p class="text-base sm:text-lg md:text-xl text-textMuted mb-6 md:mb-8 max-w-xl leading-relaxed reveal" style="transition-delay: 200ms;">
+                    Atuamos contra abusos de bancos, companhias aéreas e planos de saúde para buscar reparação com estratégia, clareza e segurança.
                 </p>
 
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-start gap-4 w-full sm:w-auto reveal" style="transition-delay: 300ms;">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-start gap-3 md:gap-4 w-full sm:w-auto reveal" style="transition-delay: 300ms;">
                     <a href="#como-funciona" class="w-full sm:w-auto bg-gold text-navy-base hover:bg-[#b5925a] px-6 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-3 cta-glow text-sm md:text-base">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         Análise do Meu Caso
@@ -379,7 +398,7 @@
                     </a>
                 </div>
                 
-                <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-10 md:mt-12 w-full reveal opacity-100" style="transition-delay: 400ms;">
+                <div class="hidden md:flex flex-wrap items-center justify-center md:justify-start gap-3 mt-10 md:mt-12 w-full reveal opacity-100" style="transition-delay: 400ms;">
                     <div class="px-4 md:px-5 py-2 md:py-2.5 rounded-full border border-gold/40 bg-navy-base/60 backdrop-blur-md flex items-center gap-2 seq-glow-1 shadow-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="md:w-[16px] md:h-[16px]"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                         <span class="text-[10px] md:text-[11px] lg:text-xs font-mono uppercase tracking-widest text-white font-bold drop-shadow-md">Indenização Ágil</span>
@@ -397,21 +416,33 @@
                 </div>
             </div>
 
-            <div class="w-full flex justify-center items-end relative z-10 pointer-events-none mt-10 md:mt-0 reveal md:absolute md:bottom-0 md:right-0 md:w-[45%] lg:w-[45%] md:h-[85vh] lg:h-[90vh]" style="transition-delay: 300ms;">
-                <div class="absolute top-[5%] md:top-[15%] left-1/2 -translate-x-1/2 w-[85%] md:w-[80%] aspect-square z-0 pointer-events-none flex items-center justify-center opacity-[0.12] mix-blend-screen">
-                    <img src="https://res.cloudinary.com/dm9mnc97u/image/upload/v1773338759/Dr._Natan_Siqueira_Advogado_BASE1_4_1_cndahd.png" alt="" class="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(201,164,106,0.4)] scale-[3] md:scale-[2.2]">
+            <div class="w-full flex justify-center items-end relative z-10 pointer-events-none mt-2 md:mt-0 reveal md:absolute md:bottom-0 md:right-0 md:w-[45%] lg:w-[45%] md:h-[85vh] lg:h-[90vh]" style="transition-delay: 300ms;">
+                <div class="absolute top-[4%] md:top-[15%] left-1/2 -translate-x-1/2 w-[75%] md:w-[80%] aspect-square z-0 pointer-events-none flex items-center justify-center opacity-[0.06] md:opacity-[0.12] mix-blend-screen">
+                    <img src="https://res.cloudinary.com/dm9mnc97u/image/upload/v1773338759/Dr._Natan_Siqueira_Advogado_BASE1_4_1_cndahd.png" alt="" class="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(201,164,106,0.35)] md:drop-shadow-[0_0_30px_rgba(201,164,106,0.4)] scale-[2.1] md:scale-[2.2]">
                 </div>
 
-                <img src="https://res.cloudinary.com/dm9mnc97u/image/upload/v1771642546/Untitled_design_34_rycyft.png" alt="Dr. Natan Siqueira" class="max-h-[55vh] md:max-h-full md:h-full w-auto object-contain object-bottom mask-bottom-fade drop-shadow-[0_0_50px_rgba(201,164,106,0.15)] relative z-20 md:scale-[1.25] lg:scale-[1.3] origin-bottom md:-translate-y-4 lg:-translate-y-8">
+                <img src="https://res.cloudinary.com/dm9mnc97u/image/upload/v1771642546/Untitled_design_34_rycyft.png" alt="Dr. Natan Siqueira" class="max-h-[42vh] sm:max-h-[48vh] md:max-h-full md:h-full w-auto object-contain object-bottom mask-bottom-fade drop-shadow-[0_0_28px_rgba(201,164,106,0.14)] md:drop-shadow-[0_0_50px_rgba(201,164,106,0.15)] relative z-20 md:scale-[1.25] lg:scale-[1.3] origin-bottom md:-translate-y-4 lg:-translate-y-8">
                 
-                <div class="absolute bottom-[2%] md:bottom-[10%] lg:bottom-[14%] left-1/2 -translate-x-1/2 z-30 glass px-5 md:px-6 py-3 rounded-2xl border border-gold/30 bg-navy-sec/90 backdrop-blur-md shadow-[0_20px_40px_rgba(0,0,0,0.6)] flex items-center gap-3 w-max pointer-events-auto transform hover:scale-105 transition-transform duration-300">
+                <div class="absolute bottom-[12%] md:bottom-[10%] lg:bottom-[14%] left-1/2 -translate-x-1/2 z-30 glass px-4 md:px-6 py-3 rounded-2xl border border-gold/30 bg-navy-sec/95 backdrop-blur-md shadow-[0_14px_30px_rgba(0,0,0,0.52)] md:shadow-[0_20px_40px_rgba(0,0,0,0.6)] flex items-center gap-3 w-max pointer-events-auto transform hover:scale-105 transition-transform duration-300">
                     <div class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-navy-base flex items-center justify-center border border-gold/40 shrink-0 overflow-hidden shadow-inner">
                         <img src="https://res.cloudinary.com/dm9mnc97u/image/upload/v1773338759/Dr._Natan_Siqueira_Advogado_BASE1_4_1_cndahd.png" alt="Símbolo NS" class="w-[120%] h-[120%] object-cover drop-shadow-md">
                     </div>
                     <div class="text-left">
-                        <p class="text-[9px] md:text-[10px] text-textMuted uppercase font-mono tracking-wider leading-none mb-1 md:mb-1.5">Advogado Especialista</p>
-                        <p class="font-bold text-gold text-xs md:text-sm leading-none tracking-wide">Dr. Natan Siqueira</p>
+                        <p class="font-bold text-gold text-xs md:text-sm leading-none tracking-wide mb-1.5">Dr. Natan Siqueira</p>
+                        <p class="text-[9px] md:text-[10px] text-textMuted uppercase font-mono tracking-wider leading-none">Advogado — OAB/RJ 240.221</p>
                     </div>
+                </div>
+            </div>
+
+            <div class="flex md:hidden flex-wrap items-center justify-center gap-2 mt-1 mb-6 w-full reveal opacity-100" style="transition-delay: 400ms;">
+                <div class="px-3 py-2 rounded-full border border-gold/40 bg-navy-base/60 backdrop-blur-sm flex items-center gap-2 seq-glow-1 shadow-lg">
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-white font-bold drop-shadow-md">Indenização Ágil</span>
+                </div>
+                <div class="px-3 py-2 rounded-full border border-gold/40 bg-navy-base/60 backdrop-blur-sm flex items-center gap-2 seq-glow-2 shadow-lg">
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-white font-bold drop-shadow-md">Foco em Resultado</span>
+                </div>
+                <div class="px-3 py-2 rounded-full border border-gold/40 bg-navy-base/60 backdrop-blur-sm flex items-center gap-2 seq-glow-3 shadow-lg">
+                    <span class="text-[9px] font-mono uppercase tracking-widest text-white font-bold drop-shadow-md">Sigilo Absoluto</span>
                 </div>
             </div>
         </div>
@@ -427,17 +458,17 @@
 
     <!-- Sobre Section -->
     <section id="sobre" class="py-16 md:py-24 px-6 relative overflow-hidden">
-        <div class="absolute top-1/2 left-0 w-96 h-96 bg-gold/10 blur-[120px] rounded-full pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>
+        <div class="absolute top-1/2 left-0 w-96 h-96 bg-gold/10 blur-[70px] md:blur-[120px] rounded-full pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>
         
         <div class="max-w-6xl mx-auto relative z-10">
             <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 <div class="reveal">
-                    <h2 class="font-heading text-3xl md:text-4xl font-bold mb-6">Compreendemos que enfrentar grandes empresas gera incertezas. Nossa missão é <span class="text-gold">equilibrar o jogo.</span></h2>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold mb-6">Enfrentar grandes empresas gera insegurança. Nossa missão é <span class="text-gold">equilibrar o jogo.</span></h2>
                     <p class="text-textMuted mb-6 leading-relaxed">
-                        A defesa do consumidor exige muito mais do que conhecimento básico das leis. Exige uma visão técnica focada em identificar falhas de corporações, blindar o seu patrimônio e exigir as compensações financeiras corretas.
+                        Atuamos contra abusos de bancos, companhias aéreas e planos de saúde, identificando falhas e buscando a reparação adequada para cada caso.
                     </p>
                     <p class="text-textMuted mb-8 leading-relaxed">
-                        Absorvemos toda a complexidade burocrática do seu conflito contra bancos, aéreas e convênios, para devolver a você a justiça, a tranquilidade e as soluções que as empresas tentam negar.
+                        Cuidamos da estratégia e da burocracia para que você acompanhe tudo com mais clareza, segurança e tranquilidade.
                     </p>
                     
                     <ul class="space-y-4">
@@ -446,8 +477,8 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                             </div>
                             <div>
-                                <h4 class="font-semibold text-textMain">Recuperação e Reparação de Danos</h4>
-                                <p class="text-sm text-textMuted">Avaliamos o seu caso para pleitear a devolução de valores e a correta indenização por danos morais e materiais.</p>
+                                <h4 class="font-semibold text-textMain">Reparação de Danos</h4>
+                                <p class="text-sm text-textMuted">Análise técnica para buscar devolução de valores e indenizações cabíveis.</p>
                             </div>
                         </li>
                         <li class="flex items-start gap-3">
@@ -455,8 +486,8 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                             </div>
                             <div>
-                                <h4 class="font-semibold text-textMain">Gestão Processual Transparente</h4>
-                                <p class="text-sm text-textMuted">Informação proativa para que você mantenha o total controle e ciência sobre o seu caso.</p>
+                                <h4 class="font-semibold text-textMain">Acompanhamento Transparente</h4>
+                                <p class="text-sm text-textMuted">Informações claras sobre cada etapa e andamento do caso.</p>
                             </div>
                         </li>
                     </ul>
@@ -536,7 +567,7 @@
                         <div class="accordion-content">
                             <div>
                                 <div class="px-5 md:px-6 pb-6 pt-0">
-                                    <p class="text-sm md:text-base text-textMuted ml-[3.5rem] md:ml-[4.5rem]">Auditoria criteriosa e organização do arcabouço probatório necessário para blindar nossos argumentos técnicos antes de qualquer movimento oficial.</p>
+                                    <p class="text-sm md:text-base text-textMuted ml-[3.5rem] md:ml-[4.5rem]">Organização das provas e definição dos argumentos técnicos antes de qualquer medida oficial.</p>
                                 </div>
                             </div>
                         </div>
@@ -556,7 +587,7 @@
                         <div class="accordion-content">
                             <div>
                                 <div class="px-5 md:px-6 pb-6 pt-0">
-                                    <p class="text-sm md:text-base text-textMuted ml-[3.5rem] md:ml-[4.5rem]">Peticionamento e atuação enérgica junto aos órgãos competentes, aplicando jurisprudência refinada e atualizada para garantir seus direitos.</p>
+                                    <p class="text-sm md:text-base text-textMuted ml-[3.5rem] md:ml-[4.5rem]">Atuação objetiva junto aos órgãos competentes, com técnica e jurisprudência atualizada.</p>
                                 </div>
                             </div>
                         </div>
@@ -576,7 +607,7 @@
                         <div class="accordion-content">
                             <div>
                                 <div class="px-5 md:px-6 pb-6 pt-0">
-                                    <p class="text-sm md:text-base text-textMuted ml-[3.5rem] md:ml-[4.5rem]">Acompanhamento minucioso do processo com reportes proativos, mantendo você sempre respaldado, informado e com total controle do cenário.</p>
+                                    <p class="text-sm md:text-base text-textMuted ml-[3.5rem] md:ml-[4.5rem]">Acompanhamento do processo com reportes claros sobre os movimentos relevantes.</p>
                                 </div>
                             </div>
                         </div>
@@ -594,7 +625,7 @@
 
     <!-- Áreas de Atuação -->
     <section id="areas" class="py-16 md:py-24 px-6 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-teal/5 blur-[150px] rounded-full pointer-events-none translate-x-1/3 -translate-y-1/3"></div>
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-teal/5 blur-[80px] md:blur-[150px] rounded-full pointer-events-none translate-x-1/3 -translate-y-1/3"></div>
 
         <div class="max-w-6xl mx-auto relative z-10">
             <div class="text-center mb-12 md:mb-16 reveal">
@@ -604,13 +635,13 @@
 
             <!-- Destaque: Direito do Consumidor e Bancário -->
             <div class="glass-strong rounded-2xl p-6 md:p-8 mb-10 md:mb-12 border-l-4 border-l-gold relative overflow-hidden reveal">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-gold/10 blur-[80px] rounded-full pointer-events-none"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gold/10 blur-[56px] md:blur-[80px] rounded-full pointer-events-none"></div>
                 <div class="flex items-center gap-3 mb-4 relative z-10">
                     <span class="bg-gold text-navy-base text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Núcleo Especializado</span>
                     <h3 class="font-heading text-2xl font-bold">Direito do Consumidor e Bancário</h3>
                 </div>
                 <p class="text-textMuted mb-6 max-w-3xl relative z-10">
-                    Proteção imediata contra abusos de grandes corporações. Atuamos de forma contundente em casos de fraudes bancárias, negativação indevida no SPC/Serasa, cancelamento de voos e abusos de planos de saúde, garantindo a sua justa reparação financeira e moral.
+                    Atuação contra fraudes bancárias, negativação indevida, cancelamento de voos e abusos de planos de saúde, buscando reparação financeira e moral adequada.
                 </p>
                 <div class="grid sm:grid-cols-2 gap-4 relative z-10">
                     <div class="glass p-4 rounded-xl flex items-center gap-3">
@@ -690,7 +721,7 @@
             <div class="grid lg:grid-cols-12 gap-10 items-center">
                 <!-- Foto -->
                 <div class="lg:col-span-5 relative flex justify-center reveal">
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gold/15 blur-[80px] rounded-full pointer-events-none z-0"></div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gold/15 blur-[56px] md:blur-[80px] rounded-full pointer-events-none z-0"></div>
                     <div class="relative z-10 glass-strong p-2.5 rounded-[2rem] shadow-[0_0_35px_rgba(201,164,106,0.2)] border border-gold/20 max-w-sm w-full bg-navy-base">
                         <img src="https://res.cloudinary.com/dm9mnc97u/image/upload/v1772557406/unnamed_2_p8copp.jpg" alt="Dr. Natan Siqueira" class="w-full h-auto aspect-[508/572] object-cover rounded-[1.5rem] bg-navy-base object-top">
                         
@@ -705,7 +736,7 @@
                             </div>
                             <div>
                                 <p class="text-[9px] text-textMuted uppercase font-mono tracking-wider leading-none mb-1">Advogado Sênior</p>
-                                <p class="font-bold text-gold text-xs leading-none">OAB/RJ</p>
+                                <p class="font-bold text-gold text-xs leading-none">OAB/RJ 240.221</p>
                             </div>
                         </div>
                     </div>
@@ -714,7 +745,8 @@
                 <!-- Bio -->
                 <div class="lg:col-span-7 reveal" style="transition-delay: 200ms;">
                     <span class="text-gold font-mono text-sm tracking-wider uppercase">O Especialista</span>
-                    <h2 class="font-heading text-3xl md:text-4xl font-bold mt-2 mb-8">Dr. Natan Siqueira</h2>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold mt-2 mb-2">Dr. Natan Siqueira</h2>
+                    <p class="text-gold font-mono text-xs tracking-wider uppercase mb-8">OAB/RJ 240.221</p>
                     <div class="grid sm:grid-cols-2 gap-8">
                         <div class="space-y-4">
                             <h3 class="flex items-center gap-2 font-bold text-lg text-textMain border-b border-glass-border pb-2">
@@ -811,7 +843,7 @@
     <!-- Quiz Section (7 Etapas) Movido pra baixo -->
     <section id="triagem" class="py-16 md:py-24 px-6 relative bg-dots">
         <div class="max-w-3xl mx-auto glass-strong rounded-3xl p-6 md:p-10 border-t border-glass-border reveal relative overflow-hidden bg-navy-base/90 shadow-2xl">
-            <div class="absolute -top-32 -right-32 w-64 h-64 bg-teal/10 blur-[100px] rounded-full pointer-events-none"></div>
+            <div class="absolute -top-32 -right-32 w-64 h-64 bg-teal/10 blur-[60px] md:blur-[100px] rounded-full pointer-events-none"></div>
             
             <div class="text-center mb-8 relative z-10">
                 <h2 class="font-heading text-2xl md:text-3xl font-bold mb-2">Análise Preliminar Estratégica</h2>
@@ -863,7 +895,7 @@
                     <div class="accordion-content">
                         <div>
                             <div class="px-5 md:px-6 pb-6 pt-0">
-                                <p class="text-sm text-textMuted leading-relaxed">A inscrição indevida do seu nome em cadastros de proteção ao crédito por um erro de banco ou loja é considerada <strong>Dano Moral Presumido</strong> (in re ipsa). O primeiro passo é reunir provas da negativação e do comprovante de que você não deve o valor (ou não contratou o serviço). Entre em contato conosco na mesma hora para entrarmos com uma liminar para limpar o seu nome e solicitar sua indenização.</p>
+                                <p class="text-sm text-textMuted leading-relaxed">A inscrição indevida pode configurar <strong>Dano Moral Presumido</strong> (in re ipsa). Reúna provas da negativação e do débito indevido para avaliarmos a limpeza do nome e eventual indenização.</p>
                             </div>
                         </div>
                     </div>
@@ -878,7 +910,7 @@
                     <div class="accordion-content">
                         <div>
                             <div class="px-5 md:px-6 pb-6 pt-0">
-                                <p class="text-sm text-textMuted leading-relaxed">Sim. Embora nossa atuação presencial e núcleo especializado principal sejam no Rio de Janeiro (TJRJ e DETRAN-RJ), o formato digital do judiciário nos permite atuar de forma online e consultiva em diversos estados do Brasil, dependendo da área e da complexidade da demanda. Consulte-nos sobre o seu caso.</p>
+                                <p class="text-sm text-textMuted leading-relaxed">Sim. A atuação digital permite atendimento online em diversos estados, conforme a área e a complexidade da demanda.</p>
                             </div>
                         </div>
                     </div>
@@ -893,7 +925,7 @@
                     <div class="accordion-content">
                         <div>
                             <div class="px-5 md:px-6 pb-6 pt-0">
-                                <p class="text-sm text-textMuted leading-relaxed">Por determinação ética da OAB, nenhum advogado pode garantir "ganho de causa" (obrigação de resultado). O que garantimos rigorosamente é a nossa <strong>obrigação de meio</strong>: ou seja, o emprego da melhor técnica jurídica, jurisprudência atualizada, dedicação irrestrita e o máximo de empenho técnico e estratégico para maximizar significativamente as chances de êxito no seu processo.</p>
+                                <p class="text-sm text-textMuted leading-relaxed">Por determinação ética da OAB, nenhum advogado pode garantir resultado. Garantimos nossa <strong>obrigação de meio</strong>: técnica, dedicação e estratégia para buscar o melhor caminho jurídico.</p>
                             </div>
                         </div>
                     </div>
@@ -908,7 +940,7 @@
                     <div class="accordion-content">
                         <div>
                             <div class="px-5 md:px-6 pb-6 pt-0">
-                                <p class="text-sm text-textMuted leading-relaxed">A gestão contínua e transparente é um de nossos pilares. Nossos clientes recebem reportes proativos via WhatsApp sempre que houver movimentações relevantes no processo. Você nunca ficará "no escuro" e nossa equipe estará à disposição para sanar dúvidas durante todo o trâmite.</p>
+                                <p class="text-sm text-textMuted leading-relaxed">Você recebe reportes via WhatsApp sobre movimentações relevantes e pode tirar dúvidas durante o andamento do caso.</p>
                             </div>
                         </div>
                     </div>
@@ -927,7 +959,7 @@
     <section id="contato" class="py-16 md:py-24 px-6 relative bg-dots">
         <div class="max-w-4xl mx-auto text-center reveal glass p-10 md:p-16 rounded-3xl border border-gold/30 relative overflow-hidden bg-gradient-to-b from-navy-base/80 to-navy-sec/80 shadow-2xl">
             <!-- Glow background interno -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-wpp/10 blur-[100px] rounded-full pointer-events-none z-0"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-wpp/10 blur-[60px] md:blur-[100px] rounded-full pointer-events-none z-0"></div>
             
             <div class="relative z-10 flex flex-col items-center">
                 <div class="w-20 h-20 bg-wpp/10 border border-wpp/30 rounded-full flex items-center justify-center text-wpp mb-6 wpp-glow">
@@ -952,7 +984,7 @@
             <div class="md:col-span-4 flex flex-col items-center text-center">
                 <img src="https://res.cloudinary.com/dm9mnc97u/image/upload/v1773338493/Dr._Natan_Siqueira_Advogado_BASE1_3_1_swdhds.png" alt="Logo" class="h-20 md:h-24 mb-4 drop-shadow-md">
                 <p class="font-heading font-bold text-xl text-textMain">Dr. Natan Siqueira</p>
-                <p class="text-xs text-textMuted mt-1">Inscrição OAB/RJ</p>
+                <p class="text-xs text-textMuted mt-1">OAB/RJ 240.221</p>
             </div>
             
             <div class="md:col-span-4 flex flex-col items-center text-center md:mt-4">
@@ -976,12 +1008,12 @@
     </footer>
 
     <!-- Floating Buttons -->
-    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
-        <a href="https://www.instagram.com/chamaodr.natan/" target="_blank" class="bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] text-white p-3.5 rounded-full insta-glow hover:scale-110 transition-transform flex items-center justify-center">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+    <div class="fixed bottom-24 right-4 md:bottom-6 md:right-6 z-50 flex flex-col gap-2 md:gap-3">
+        <a href="https://www.instagram.com/chamaodr.natan/" target="_blank" class="bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] text-white p-3 md:p-3.5 rounded-full insta-glow hover:scale-110 transition-transform flex items-center justify-center" aria-label="Abrir Instagram">
+            <svg class="w-6 h-6 md:w-[26px] md:h-[26px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
-        <a href="javascript:openWhatsApp('')" class="bg-wpp text-white p-3.5 rounded-full wpp-glow hover:scale-110 transition-transform flex items-center justify-center">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <a href="javascript:openWhatsApp('')" class="bg-wpp text-white p-3 md:p-3.5 rounded-full wpp-glow hover:scale-110 transition-transform flex items-center justify-center" aria-label="Abrir WhatsApp">
+            <svg class="w-6 h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         </a>
     </div>
 
@@ -1017,6 +1049,7 @@
         }
 
         // Reveal animations
+        const revealElements = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1026,27 +1059,52 @@
             });
         }, { threshold: 0.1 });
 
+        function startRevealAnimations() {
+            revealElements.forEach(el => revealObserver.observe(el));
+        }
+
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
-            // Velocidade do preloader ajustada para permitir leitura
+            if (!preloader) {
+                startRevealAnimations();
+                return;
+            }
+
             setTimeout(() => {
                 preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                preloader.style.pointerEvents = 'none';
+                preloader.querySelectorAll('*').forEach(el => {
+                    el.style.animation = 'none';
+                });
                 setTimeout(() => {
-                    preloader.style.display = 'none';
-                    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+                    preloader.remove();
+                    startRevealAnimations();
                 }, 500); 
             }, 1800);
-        });
+        }, { once: true });
 
         // Navbar bg on scroll
         const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('header-scrolled');
-            } else {
-                navbar.classList.remove('header-scrolled');
+        let navbarScrolled = false;
+        let scrollTicking = false;
+
+        function updateNavbarOnScroll() {
+            const shouldBeScrolled = window.scrollY > 50;
+            if (shouldBeScrolled !== navbarScrolled) {
+                navbarScrolled = shouldBeScrolled;
+                navbar.classList.toggle('header-scrolled', shouldBeScrolled);
             }
-        });
+            scrollTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                scrollTicking = true;
+                requestAnimationFrame(updateNavbarOnScroll);
+            }
+        }, { passive: true });
+        updateNavbarOnScroll();
 
         // Toggle Accordion Universal Func
         window.toggleAccordion = function(element, groupSelector) {
