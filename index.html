@@ -245,16 +245,10 @@
         .linkedin-profile-wrapper {
             width: 100%;
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
             margin-top: 2rem;
             overflow: visible;
-        }
-
-        @media (max-width: 1023px) {
-            .linkedin-profile-wrapper {
-                justify-content: center;
-            }
         }
 
         @media (max-width: 767px) {
@@ -700,9 +694,7 @@
                 </div>
             </div>
             <div class="linkedin-profile-wrapper reveal" style="transition-delay: 150ms;">
-                <div class="badge-base LI-profile-badge" data-locale="pt_BR" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="natan-siqueira-1a4b20182" data-version="v1">
-                    <a class="badge-base__link LI-simple-link" href="https://br.linkedin.com/in/natan-siqueira-1a4b20182?trk=profile-badge" target="_blank" rel="noopener noreferrer" aria-label="Ver perfil de Natan Siqueira no LinkedIn">NATAN SIQUEIRA</a>
-                </div>
+                <div class="badge-base LI-profile-badge" data-locale="pt_BR" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="natan-siqueira-1a4b20182" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://br.linkedin.com/in/natan-siqueira-1a4b20182?trk=profile-badge">NATAN SIQUEIRA</a></div>
             </div>
         </div>
     </section>
@@ -1098,11 +1090,6 @@
         // Inicia o Quiz
         renderStep();
     </script>
-    <script
-        src="https://platform.linkedin.com/badges/js/profile.js"
-        async
-        defer
-        type="text/javascript"
-    ></script>
+    <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
 </body>
 </html>
