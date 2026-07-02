@@ -244,11 +244,16 @@
 
         .linkedin-profile-wrapper {
             width: 100%;
+            min-height: 286px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 2rem;
             overflow: visible;
+        }
+
+        .linkedin-profile-wrapper .badge-base__link {
+            display: none;
         }
 
         @media (max-width: 767px) {
@@ -1082,6 +1087,74 @@
         // Inicia o Quiz
         renderStep();
     </script>
-    <script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
+    <script id="linkedin-badge-script" src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
+    <script>
+        (() => {
+            const badge = document.querySelector('#linkedin .LI-profile-badge');
+            if (!badge) return;
+
+            let renderAttempts = 0;
+            let scriptRetries = 0;
+            let retryTimer;
+
+            const hasRenderedBadge = () => Boolean(badge.querySelector('iframe'));
+
+            const scheduleRender = (delay = 500) => {
+                clearTimeout(retryTimer);
+                retryTimer = setTimeout(renderBadge, delay);
+            };
+
+            const attachScriptHandlers = (script) => {
+                script.addEventListener('load', () => scheduleRender(1500), { once: true });
+                script.addEventListener('error', reloadLinkedInScript, { once: true });
+            };
+
+            const reloadLinkedInScript = () => {
+                if (scriptRetries >= 1 || hasRenderedBadge()) return;
+                scriptRetries++;
+
+                const currentScript = document.getElementById('linkedin-badge-script');
+                const replacement = document.createElement('script');
+                replacement.id = 'linkedin-badge-script';
+                replacement.src = `${currentScript.src.split('?')[0]}?retry=${Date.now()}`;
+                replacement.async = true;
+                replacement.defer = true;
+                replacement.type = 'text/javascript';
+                attachScriptHandlers(replacement);
+                currentScript.replaceWith(replacement);
+            };
+
+            function renderBadge() {
+                if (hasRenderedBadge()) return;
+
+                if (typeof window.LIRenderAll !== 'function') {
+                    reloadLinkedInScript();
+                    return;
+                }
+
+                badge.removeAttribute('data-rendered');
+                badge.removeAttribute('data-uid');
+                document.querySelectorAll('script[src^="https://badges.linkedin.com/profile"]').forEach(script => script.remove());
+                window.LIRenderAll();
+                renderAttempts++;
+
+                if (renderAttempts < 3) scheduleRender(3000);
+            }
+
+            attachScriptHandlers(document.getElementById('linkedin-badge-script'));
+            window.addEventListener('load', () => scheduleRender(2000), { once: true });
+            window.addEventListener('pageshow', () => scheduleRender(1000));
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries.some(entry => entry.isIntersecting)) {
+                        scheduleRender(300);
+                        observer.disconnect();
+                    }
+                }, { rootMargin: '200px' });
+                observer.observe(badge);
+            }
+        })();
+    </script>
 </body>
 </html>
