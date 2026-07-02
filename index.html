@@ -250,10 +250,108 @@
             align-items: center;
             margin-top: 2rem;
             overflow: visible;
+            position: relative;
         }
 
         .linkedin-profile-wrapper .badge-base__link {
             display: none;
+        }
+
+        .linkedin-profile-wrapper .LI-profile-badge {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .linkedin-profile-wrapper.linkedin-badge-loaded .LI-profile-badge {
+            opacity: 1;
+            pointer-events: auto;
+            position: static;
+        }
+
+        .linkedin-profile-card {
+            width: min(310px, 100%);
+            min-height: 286px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 8px;
+            background: #000;
+            color: #fff;
+            text-align: left;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+        }
+
+        .linkedin-profile-wrapper.linkedin-badge-loaded .linkedin-profile-card {
+            display: none;
+        }
+
+        .linkedin-profile-card__header {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            background: #38434f;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+        .linkedin-profile-card__in {
+            margin-left: 2px;
+            padding: 0 2px;
+            border-radius: 2px;
+            background: #fff;
+            color: #0a66c2;
+            font-size: 15px;
+            line-height: 17px;
+        }
+
+        .linkedin-profile-card__body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 16px;
+        }
+
+        .linkedin-profile-card__photo {
+            width: 58px;
+            height: 58px;
+            margin-bottom: 12px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .linkedin-profile-card__name {
+            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .linkedin-profile-card__role,
+        .linkedin-profile-card__location {
+            font-size: 13px;
+            line-height: 1.35;
+        }
+
+        .linkedin-profile-card__location {
+            margin-top: 4px;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .linkedin-profile-card__button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: auto;
+            padding: 7px 14px;
+            border: 1px solid #fff;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
         }
 
         @media (max-width: 767px) {
@@ -692,6 +790,16 @@
             </div>
             <div class="linkedin-profile-wrapper reveal" style="transition-delay: 150ms;">
                 <div class="badge-base LI-profile-badge" data-locale="pt_BR" data-size="medium" data-theme="dark" data-type="VERTICAL" data-vanity="natan-siqueira-1a4b20182" data-version="v1"><a class="badge-base__link LI-simple-link" href="https://br.linkedin.com/in/natan-siqueira-1a4b20182?trk=profile-badge">NATAN SIQUEIRA</a></div>
+                <a class="linkedin-profile-card" href="https://br.linkedin.com/in/natan-siqueira-1a4b20182?trk=profile-badge" target="_blank" rel="noopener noreferrer" aria-label="Ver perfil de Natan Siqueira no LinkedIn">
+                    <span class="linkedin-profile-card__header">Linked<span class="linkedin-profile-card__in">in</span></span>
+                    <span class="linkedin-profile-card__body">
+                        <img class="linkedin-profile-card__photo" src="https://res.cloudinary.com/dm9mnc97u/image/upload/v1772557406/unnamed_2_p8copp.jpg" alt="Dr. Natan Siqueira">
+                        <span class="linkedin-profile-card__name">NATAN SIQUEIRA</span>
+                        <span class="linkedin-profile-card__role">Advogado | Pesquisador em Criminologia e Direito Penal</span>
+                        <span class="linkedin-profile-card__location">Rio de Janeiro, Brasil</span>
+                        <span class="linkedin-profile-card__button">Ver perfil</span>
+                    </span>
+                </a>
             </div>
         </div>
     </section>
@@ -1092,12 +1200,17 @@
         (() => {
             const badge = document.querySelector('#linkedin .LI-profile-badge');
             if (!badge) return;
+            const wrapper = badge.closest('.linkedin-profile-wrapper');
 
             let renderAttempts = 0;
             let scriptRetries = 0;
             let retryTimer;
 
-            const hasRenderedBadge = () => Boolean(badge.querySelector('iframe'));
+            const hasRenderedBadge = () => {
+                const rendered = Boolean(badge.querySelector('iframe'));
+                wrapper.classList.toggle('linkedin-badge-loaded', rendered);
+                return rendered;
+            };
 
             const scheduleRender = (delay = 500) => {
                 clearTimeout(retryTimer);
@@ -1114,6 +1227,7 @@
                 scriptRetries++;
 
                 const currentScript = document.getElementById('linkedin-badge-script');
+                if (!currentScript) return;
                 const replacement = document.createElement('script');
                 replacement.id = 'linkedin-badge-script';
                 replacement.src = `${currentScript.src.split('?')[0]}?retry=${Date.now()}`;
@@ -1144,6 +1258,15 @@
             attachScriptHandlers(document.getElementById('linkedin-badge-script'));
             window.addEventListener('load', () => scheduleRender(2000), { once: true });
             window.addEventListener('pageshow', () => scheduleRender(1000));
+
+            const badgeObserver = new MutationObserver(() => {
+                if (hasRenderedBadge()) {
+                    clearTimeout(retryTimer);
+                    badgeObserver.disconnect();
+                }
+            });
+            badgeObserver.observe(badge, { childList: true });
+            hasRenderedBadge();
 
             if ('IntersectionObserver' in window) {
                 const observer = new IntersectionObserver((entries) => {
