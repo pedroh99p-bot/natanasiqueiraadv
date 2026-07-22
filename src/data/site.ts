@@ -20,7 +20,7 @@ export const site = {
     whatsappLogo:
       'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784740034/whatsapp-logo-png_iyyy0e.webp',
     heroPhoto:
-      'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784730827/MWS_0266_hysvkf.webp',
+      'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784741479/WhatsApp_Image_2026-07-22_at_14.30.49_mng24a.webp',
     specialistPhoto:
       'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784730874/MWS_0264_zum8kv.webp',
   },

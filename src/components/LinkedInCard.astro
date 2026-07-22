@@ -2,44 +2,27 @@
 import Icon from './Icon.astro';
 
 type Props = {
-  href?: string | null;
+  href: string;
 };
 
 const { href } = Astro.props as Props;
 ---
 
-{
-  href ? (
-    <div class="linkedin-card" aria-label="LinkedIn">
-      <div class="linkedin-card__badge">
-        <div
-          class="badge-base LI-profile-badge"
-          data-locale="pt_BR"
-          data-size="medium"
-          data-theme="dark"
-          data-type="VERTICAL"
-          data-vanity="natan-siqueira-1a4b20182"
-          data-version="v1"
-        >
-          <a class="badge-base__link LI-simple-link" href={href}>
-            NATAN SIQUEIRA
-          </a>
-        </div>
-      </div>
-      <div class="linkedin-card__content">
-        <strong>LinkedIn profissional</strong>
-        <span>Perfil com pesquisa e atuação em Direito Criminal.</span>
-        <a
-          class="linkedin-card__action"
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-event="click_linkedin"
-        >
-          Ver perfil no LinkedIn
-          <Icon name="external" class="icon icon--sm" />
-        </a>
-      </div>
-    </div>
-  ) : null
-}
+<article class="linkedin-card" aria-labelledby="linkedin-card-title">
+  <span class="linkedin-card__mark" aria-hidden="true">in</span>
+  <div class="linkedin-card__content">
+    <p class="linkedin-card__eyebrow">LinkedIn</p>
+    <h3 id="linkedin-card-title">Natan Siqueira</h3>
+    <p>Perfil profissional com atuação, pesquisa e publicações em Direito Criminal.</p>
+    <a
+      class="linkedin-card__action"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-event="click_linkedin"
+    >
+      Ver perfil no LinkedIn
+      <Icon name="external" class="icon icon--sm" />
+    </a>
+  </div>
+</article>
