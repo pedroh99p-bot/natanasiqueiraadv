@@ -25,8 +25,6 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString(
 const ogImage = Astro.site ? new URL('/og-image.svg', Astro.site).toString() : '/og-image.svg';
 const heroPreload = cloudinaryUrl(site.assets.heroPhoto, { width: 960 });
 const heroPreloadSrcSet = cloudinarySrcSet(site.assets.heroPhoto, [640, 828, 1080, 1280, 1600, 1920]);
-const roundLogoPreload = cloudinaryUrl(site.assets.roundSymbol, { width: 96 });
-const horizontalLogoPreload = cloudinaryUrl(site.assets.horizontalLogo, { width: 280 });
 const structuredPerson = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -54,17 +52,6 @@ const structuredService = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#06131F" />
     <meta name="color-scheme" content="dark light" />
-    <script is:inline>
-      (() => {
-        document.documentElement.classList.add('js');
-        try {
-          const shouldShowPreloader = sessionStorage.getItem('natan-siqueira-preloader-v1') !== 'seen';
-          document.documentElement.dataset.preloader = shouldShowPreloader ? 'run' : 'skip';
-        } catch {
-          document.documentElement.dataset.preloader = 'skip';
-        }
-      })();
-    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     {canonical ? <link rel="canonical" href={canonical} /> : null}
@@ -93,29 +80,6 @@ const structuredService = {
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredService)}></script>
   </head>
   <body>
-    <div class="preloader" data-preloader aria-hidden="true">
-      <div class="preloader__shell">
-        <img
-          class="preloader__mark"
-          src={roundLogoPreload}
-          alt=""
-          width="1080"
-          height="1080"
-          decoding="async"
-        />
-        <img
-          class="preloader__wordmark"
-          src={horizontalLogoPreload}
-          alt=""
-          width="1080"
-          height="360"
-          decoding="async"
-        />
-        <div class="preloader__bar" aria-hidden="true">
-          <span data-preloader-progress></span>
-        </div>
-      </div>
-    </div>
     <slot />
     <script>
       import '../scripts/site.ts';
