@@ -10,23 +10,36 @@ const { href } = Astro.props as Props;
 
 {
   href ? (
-    <a
-      class="linkedin-card"
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      data-event="click_linkedin"
-      aria-label="Ver perfil do Dr. Natan Siqueira no LinkedIn, abre em nova aba"
-    >
-      <span class="linkedin-card__mark" aria-hidden="true">in</span>
-      <span class="linkedin-card__content">
-        <strong>Dr. Natan Siqueira</strong>
-        <span>Advogado Criminalista e Pesquisador</span>
-      </span>
-      <span class="linkedin-card__action">
-        Ver perfil no LinkedIn
-        <Icon name="external" class="icon icon--sm" />
-      </span>
-    </a>
+    <div class="linkedin-card" aria-label="LinkedIn">
+      <div class="linkedin-card__badge">
+        <div
+          class="badge-base LI-profile-badge"
+          data-locale="pt_BR"
+          data-size="medium"
+          data-theme="dark"
+          data-type="VERTICAL"
+          data-vanity="natan-siqueira-1a4b20182"
+          data-version="v1"
+        >
+          <a class="badge-base__link LI-simple-link" href={href}>
+            NATAN SIQUEIRA
+          </a>
+        </div>
+      </div>
+      <div class="linkedin-card__content">
+        <strong>LinkedIn profissional</strong>
+        <span>Perfil com pesquisa e atuação em Direito Criminal.</span>
+        <a
+          class="linkedin-card__action"
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-event="click_linkedin"
+        >
+          Ver perfil no LinkedIn
+          <Icon name="external" class="icon icon--sm" />
+        </a>
+      </div>
+    </div>
   ) : null
 }

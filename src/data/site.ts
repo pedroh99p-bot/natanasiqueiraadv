@@ -17,6 +17,8 @@ export const site = {
       'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784729831/68fb54f1-838c-4aef-a5aa-3f2f853193b8_1_1_tle6ib.webp',
     roundSymbol:
       'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784729832/668d934d-26cb-45c6-818a-c1fac53afe73_1_vwpgc9.webp',
+    whatsappLogo:
+      'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784740034/whatsapp-logo-png_iyyy0e.webp',
     heroPhoto:
       'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784730827/MWS_0266_hysvkf.webp',
     specialistPhoto:

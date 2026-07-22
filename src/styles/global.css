@@ -358,6 +358,13 @@ button {
   flex: 0 0 auto;
 }
 
+.brand__wordmark {
+  width: auto;
+  height: 34px;
+  object-fit: contain;
+  flex: 0 1 auto;
+}
+
 .brand--wide {
   display: none;
 }
@@ -404,6 +411,9 @@ button {
   position: fixed;
   inset: 0;
   z-index: 90;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.75rem;
   background: rgba(3, 10, 18, 0.78);
   opacity: 0;
   pointer-events: none;
@@ -416,25 +426,25 @@ button {
 }
 
 .mobile-menu__panel {
-  position: absolute;
-  inset: 0.75rem;
-  max-width: 460px;
-  margin-inline: auto;
+  position: relative;
+  width: min(100%, 460px);
+  height: 100%;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   border: 1px solid rgba(244, 240, 232, 0.16);
-  border-radius: 28px;
+  border-radius: 28px 0 0 28px;
   background:
     linear-gradient(180deg, rgba(16, 37, 59, 0.98), rgba(6, 19, 31, 0.98)),
     var(--navy-900);
   box-shadow: var(--shadow-soft);
   padding: 1rem;
-  transform: translateY(-8px);
+  transform: translateX(105%);
   transition: transform var(--duration-medium) var(--ease);
 }
 
 .mobile-menu.is-open .mobile-menu__panel {
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
 .mobile-menu__top {
@@ -468,7 +478,7 @@ button {
 }
 
 .hero-section {
-  --hero-object-position: 47% 48%;
+  --hero-object-position: 47% 40%;
   --hero-transform: translateX(5%) scale(1.04);
   --hero-copy-width: 22rem;
   min-height: 100svh;
@@ -876,9 +886,9 @@ button {
 
 .linkedin-card {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: 0.8rem;
-  align-items: center;
+  align-items: start;
   width: min(100%, 420px);
   border: 1px solid rgba(10, 102, 194, 0.22);
   border-radius: 16px;
@@ -886,21 +896,16 @@ button {
   padding: 0.95rem;
 }
 
-.linkedin-card__mark {
-  width: 42px;
-  height: 42px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background: #0a66c2;
-  color: white;
-  font-weight: 800;
+.linkedin-card__badge {
+  width: 100%;
+  overflow: hidden;
+  padding-top: 0.1rem;
 }
 
 .linkedin-card__content {
   display: grid;
   min-width: 0;
+  gap: 0.35rem;
   color: var(--navy-950);
 }
 
@@ -911,7 +916,7 @@ button {
 }
 
 .linkedin-card__action {
-  grid-column: 1 / -1;
+  margin-top: 0.2rem;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -1039,7 +1044,7 @@ button {
 
 .carousel__controls {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 0.85rem;
   margin-top: 0.4rem;
@@ -1066,6 +1071,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
+  justify-self: center;
 }
 
 .carousel__dots button {
@@ -1407,9 +1413,9 @@ button {
   background: linear-gradient(180deg, rgba(10, 27, 46, 0.96), rgba(6, 19, 31, 0.94));
   color: var(--whatsapp);
   box-shadow: 0 18px 38px rgba(6, 19, 31, 0.35);
-  opacity: 0;
-  transform: translate3d(0, 12px, 0) scale(0.96);
-  pointer-events: none;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
   transition:
     opacity var(--duration-fast) var(--ease),
     transform var(--duration-fast) var(--ease),
@@ -1422,13 +1428,16 @@ button {
 
 .floating-whatsapp.is-visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
+  transform: none;
   pointer-events: auto;
 }
 
-.floating-whatsapp .icon {
+.floating-whatsapp .whatsapp-mark,
+.whatsapp-mark {
   width: 1.45rem;
   height: 1.45rem;
+  flex: 0 0 auto;
+  object-fit: contain;
 }
 
 .floating-whatsapp span {
@@ -1460,6 +1469,7 @@ button {
   transition-delay: var(--reveal-delay, 0ms);
 }
 
+.js [data-reveal].is-visible [data-reveal-group] > *,
 .js [data-reveal-group].is-visible > * {
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
@@ -1526,7 +1536,7 @@ button {
 
 @media (max-width: 389px) {
   .hero-section {
-    --hero-object-position: 47% 48%;
+    --hero-object-position: 47% 40%;
     --hero-transform: translateX(5%) scale(1.04);
     --hero-copy-width: 21rem;
   }
@@ -1534,7 +1544,7 @@ button {
 
 @media (min-width: 390px) and (max-width: 429px) {
   .hero-section {
-    --hero-object-position: 48% 48%;
+    --hero-object-position: 48% 40%;
     --hero-transform: translateX(4%) scale(1.035);
     --hero-copy-width: 22rem;
   }
@@ -1542,7 +1552,7 @@ button {
 
 @media (min-width: 430px) and (max-width: 767px) {
   .hero-section {
-    --hero-object-position: 49% 49%;
+    --hero-object-position: 49% 42%;
     --hero-transform: translateX(3%) scale(1.025);
     --hero-copy-width: 23rem;
   }
@@ -1550,7 +1560,7 @@ button {
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .hero-section {
-    --hero-object-position: 52% 50%;
+    --hero-object-position: 52% 44%;
     --hero-transform: translateX(1%) scale(1.01);
     --hero-copy-width: 28rem;
   }
@@ -1558,7 +1568,7 @@ button {
 
 @media (min-width: 1024px) {
   .hero-section {
-    --hero-object-position: 54% 50%;
+    --hero-object-position: 54% 46%;
     --hero-transform: none;
     --hero-copy-width: 40rem;
   }
@@ -1820,6 +1830,7 @@ button {
   }
 
   .linkedin-card {
+    grid-template-columns: auto minmax(0, 1fr);
     justify-self: start;
   }
 

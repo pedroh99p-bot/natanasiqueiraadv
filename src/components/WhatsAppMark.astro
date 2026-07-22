@@ -1,0 +1,18 @@
+---
+import { site } from '../data/site';
+
+type Props = {
+  class?: string;
+};
+
+const className = Astro.props.class ?? 'whatsapp-mark';
+---
+
+<img
+  class={className}
+  src={site.assets.whatsappLogo}
+  alt=""
+  width="512"
+  height="512"
+  decoding="async"
+/>

@@ -78,6 +78,13 @@ const structuredService = {
     <meta name="twitter:image" content={ogImage} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredPerson)}></script>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredService)}></script>
+    <script
+      is:inline
+      src="https://platform.linkedin.com/badges/js/profile.js"
+      async
+      defer
+      type="text/javascript"
+    ></script>
   </head>
   <body>
     <slot />

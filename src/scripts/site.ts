@@ -461,42 +461,7 @@ const setupTimeline = () => {
 const setupFloatingWhatsapp = () => {
   const button = document.querySelector<HTMLElement>('[data-floating-whatsapp]');
   if (!button) return;
-
-  const blockers = Array.from(
-    document.querySelectorAll<HTMLElement>('#quiz, #areas, #final, .site-footer'),
-  );
-  const threshold = 180;
-  let blocked = false;
-
-  const isKeyboardOpen = () => {
-    const viewport = window.visualViewport;
-    if (!viewport) return false;
-    return window.innerHeight - viewport.height > 160;
-  };
-
-  const updateVisibility = () => {
-    const visible =
-      window.scrollY > threshold && !blocked && !isKeyboardOpen() && !document.body.classList.contains('menu-is-open');
-    button.classList.toggle('is-visible', visible);
-  };
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        blocked = entries.some((entry) => entry.isIntersecting);
-        updateVisibility();
-      },
-      { rootMargin: '0px 0px -10% 0px', threshold: 0.12 },
-    );
-
-    blockers.forEach((blocker) => observer.observe(blocker));
-  }
-
-  window.addEventListener('scroll', updateVisibility, { passive: true });
-  window.addEventListener('resize', updateVisibility);
-  window.visualViewport?.addEventListener('resize', updateVisibility);
-  window.visualViewport?.addEventListener('scroll', updateVisibility);
-  updateVisibility();
+  button.classList.add('is-visible');
 };
 
 const setupReveals = () => {

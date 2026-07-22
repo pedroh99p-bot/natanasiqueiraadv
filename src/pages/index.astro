@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import LinkedInCard from '../components/LinkedInCard.astro';
 import MarqueeBand from '../components/MarqueeBand.astro';
+import WhatsAppMark from '../components/WhatsAppMark.astro';
 import { quiz, site } from '../data/site';
 import { cloudinarySrcSet, cloudinaryUrl } from '../lib/cloudinary';
 
@@ -21,7 +22,8 @@ const finalMessage =
   'Olá, Dr. Natan. Vim pelo site e gostaria de apresentar minha situação para verificar a possibilidade de atendimento.';
 const whatsappHeroHref = `${site.whatsapp.href}?text=${encodeURIComponent(heroMessage)}`;
 const whatsappFinalHref = `${site.whatsapp.href}?text=${encodeURIComponent(finalMessage)}`;
-const linkedinUrl = import.meta.env.PUBLIC_LINKEDIN_URL || null;
+const linkedinUrl =
+  import.meta.env.PUBLIC_LINKEDIN_URL || 'https://br.linkedin.com/in/natan-siqueira-1a4b20182?trk=profile-badge';
 const situationIcons = ['handcuffs', 'file-text', 'search', 'scale', 'users', 'message-circle'];
 const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
 ---
@@ -42,7 +44,16 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           decoding="async"
           class="brand__mark"
         />
-        <span>{site.shortName}</span>
+        <img
+          class="brand__wordmark"
+          src={horizontalLogoSrc}
+          srcset={horizontalLogoSrcSet}
+          sizes="(max-width: 767px) 128px, 180px"
+          width="1080"
+          height="360"
+          alt="Natan Siqueira"
+          decoding="async"
+        />
       </a>
 
       <a class="brand brand--wide" href="#inicio" aria-label="Voltar ao início">
@@ -70,7 +81,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           data-event="click_whatsapp_nav"
           data-event-source="navbar"
         >
-          <Icon name="message-circle" class="icon" />
+          <WhatsAppMark class="whatsapp-mark" />
           Falar agora
         </a>
         <button
@@ -90,17 +101,26 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
       <div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-label="Menu de navegação">
         <div class="mobile-menu__top">
           <a class="brand" href="#inicio" data-menu-link>
-            <img
-              src={roundLogoSrc}
-              srcset={roundLogoSrcSet}
-              sizes="48px"
+          <img
+            src={roundLogoSrc}
+            srcset={roundLogoSrcSet}
+            sizes="48px"
               width="1080"
-              height="1080"
-              alt=""
-              decoding="async"
-              class="brand__mark"
-            />
-            <span>{site.shortName}</span>
+            height="1080"
+            alt=""
+            decoding="async"
+            class="brand__mark"
+          />
+          <img
+            class="brand__wordmark"
+            src={horizontalLogoSrc}
+            srcset={horizontalLogoSrcSet}
+            sizes="160px"
+            width="1080"
+            height="360"
+            alt="Natan Siqueira"
+            decoding="async"
+          />
           </a>
           <button class="menu-button" type="button" aria-label="Fechar menu" data-menu-close>
             <Icon name="x" class="icon" />
@@ -112,17 +132,17 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
         </nav>
 
         <div class="mobile-menu__footer">
-          <a
-            class="button button--primary"
-            href={whatsappHeroHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-event="click_whatsapp_nav"
-            data-event-source="mobile_menu"
-          >
-            <Icon name="message-circle" class="icon" />
-            Falar com o advogado
-          </a>
+        <a
+          class="button button--primary"
+          href={whatsappHeroHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-event="click_whatsapp_nav"
+          data-event-source="mobile_menu"
+        >
+          <WhatsAppMark class="whatsapp-mark" />
+          Falar com o advogado
+        </a>
           <a
             class="button button--secondary"
             href={site.instagram.href}
@@ -172,12 +192,12 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
             data-event="click_whatsapp_hero"
             data-event-source="hero"
           >
-            <Icon name="message-circle" class="icon" />
-            Falar com o advogado
+            <WhatsAppMark class="whatsapp-mark" />
+            Falar com Natan
           </a>
           <a class="button button--secondary button--large" href="#quiz" data-event="click_quiz_from_hero">
             <Icon name="user" class="icon" />
-            Apresentar minha situação
+            Por onde começar
           </a>
         </div>
         <p class="microcopy">
@@ -195,6 +215,10 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           <p class="eyebrow">Entenda por onde começar</p>
           <h2 id="quiz-title">Conte brevemente o que está acontecendo</h2>
           <p>Responda três perguntas rápidas. Você revisa tudo antes de abrir o WhatsApp.</p>
+          <a class="section-link" href="#quiz" data-event="click_quiz_intro">
+            Começar o questionário
+            <Icon name="arrow-right" class="icon icon--sm" />
+          </a>
         </div>
 
         <form class="quiz-card" data-quiz data-whatsapp-number={site.whatsapp.number} novalidate data-reveal data-reveal-group="quiz">
@@ -294,7 +318,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
                 rel="noopener noreferrer"
                 data-quiz-whatsapp
               >
-                <Icon name="message-circle" class="icon" />
+                <WhatsAppMark class="whatsapp-mark" />
                 Abrir WhatsApp
               </a>
               <button class="button button--secondary" type="button" data-quiz-reset>
@@ -353,7 +377,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           <li><Icon name="message-circle" class="icon" /> Comunicação transparente</li>
           <li><Icon name="clipboard" class="icon" /> {site.registration}</li>
         </ul>
-        {linkedinUrl ? <LinkedInCard href={linkedinUrl} /> : null}
+        <LinkedInCard href={linkedinUrl} />
         <a
           class="button button--primary button--wide"
           href={whatsappFinalHref}
@@ -362,8 +386,8 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           data-event="click_whatsapp_specialist"
           data-event-source="specialist"
         >
-          <Icon name="message-circle" class="icon" />
-          Falar com o Dr. Natan
+          <WhatsAppMark class="whatsapp-mark" />
+          Falar com Natan
         </a>
       </div>
     </section>
@@ -461,7 +485,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           data-event="click_whatsapp_urgent"
           data-event-source="urgent"
         >
-          <Icon name="message-circle" class="icon" />
+          <WhatsAppMark class="whatsapp-mark" />
           Falar pelo WhatsApp
         </a>
       </div>
@@ -556,8 +580,8 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
             data-event="click_whatsapp_final"
             data-event-source="final"
           >
-            <Icon name="message-circle" class="icon" />
-            Falar com o Dr. Natan
+            <WhatsAppMark class="whatsapp-mark" />
+            Falar com Natan
           </a>
           <a
             class="button button--secondary button--large"
@@ -587,7 +611,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
     data-event-source="floating"
     data-floating-whatsapp
   >
-    <Icon name="whatsapp" class="icon" />
+    <WhatsAppMark class="whatsapp-mark" />
     <span>WhatsApp</span>
   </a>
 
@@ -621,7 +645,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           data-event="click_whatsapp_footer"
           data-event-source="footer"
         >
-          <Icon name="message-circle" class="icon" />
+          <WhatsAppMark class="whatsapp-mark" />
           {site.whatsapp.display}
         </a>
         <a
