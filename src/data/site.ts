@@ -19,6 +19,10 @@ export const site = {
       'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784729832/668d934d-26cb-45c6-818a-c1fac53afe73_1_vwpgc9.webp',
     whatsappLogo:
       'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784740034/whatsapp-logo-png_iyyy0e.webp',
+    whatsappPreview:
+      'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784742256/ccff8927-aaf7-4fb7-b39e-e81fbd2988b1_y3v4s9.webp',
+    faviconLogo:
+      'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784742365/7d1f8ea8-131b-4efc-bbd4-8ba782b06648_1_gjz6j2.webp',
     heroPhoto:
       'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1784741479/WhatsApp_Image_2026-07-22_at_14.30.49_mng24a.webp',
     specialistPhoto:
