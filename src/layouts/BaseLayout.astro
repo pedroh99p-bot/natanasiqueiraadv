@@ -1,0 +1,89 @@
+---
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/cormorant-garamond/700.css';
+import '../styles/global.css';
+
+import { site } from '../data/site';
+import { cloudinarySrcSet, cloudinaryUrl } from '../lib/cloudinary';
+
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const {
+  title = 'Dr. Natan Siqueira | Advocacia Criminal',
+  description = 'Advocacia criminal com atuação técnica, responsável e atendimento confidencial. Entre em contato com o Dr. Natan Siqueira.',
+} = Astro.props as Props;
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined;
+const ogImage = Astro.site ? new URL('/og-image.svg', Astro.site).toString() : '/og-image.svg';
+const heroPreload = cloudinaryUrl(site.assets.heroPhoto, { width: 960 });
+const heroPreloadSrcSet = cloudinarySrcSet(site.assets.heroPhoto, [640, 828, 1080, 1280, 1600, 1920]);
+const structuredPerson = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.profession,
+  telephone: site.whatsapp.display,
+  sameAs: [site.instagram.href],
+  image: cloudinaryUrl(site.assets.heroPhoto, { width: 1200 }),
+};
+const structuredService = {
+  '@context': 'https://schema.org',
+  '@type': 'LegalService',
+  name: site.name,
+  legalName: site.name,
+  telephone: site.whatsapp.display,
+  sameAs: [site.instagram.href],
+  url: Astro.site?.toString(),
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#06131F" />
+    <meta name="color-scheme" content="dark light" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical ? <link rel="canonical" href={canonical} /> : null}
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+    <link
+      rel="preload"
+      as="image"
+      href={heroPreload}
+      imagesrcset={heroPreloadSrcSet}
+      imagesizes="100vw"
+    />
+    <link rel="icon" href={site.assets.roundSymbol} type="image/webp" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    {canonical ? <meta property="og:url" content={canonical} /> : null}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredPerson)}></script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredService)}></script>
+  </head>
+  <body>
+    <slot />
+    <script>
+      import '../scripts/site.ts';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,598 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import LinkedInCard from '../components/LinkedInCard.astro';
+import MarqueeBand from '../components/MarqueeBand.astro';
+import { quiz, site } from '../data/site';
+import { cloudinarySrcSet, cloudinaryUrl } from '../lib/cloudinary';
+
+const heroSrcSet = cloudinarySrcSet(site.assets.heroPhoto, [640, 828, 1080, 1280, 1600, 1920]);
+const heroSrc = cloudinaryUrl(site.assets.heroPhoto, { width: 960 });
+const specialistSrcSet = cloudinarySrcSet(site.assets.specialistPhoto, [480, 640, 768, 960, 1200, 1440]);
+const specialistSrc = cloudinaryUrl(site.assets.specialistPhoto, { width: 760 });
+const roundLogoSrc = cloudinaryUrl(site.assets.roundSymbol, { width: 96 });
+const roundLogoSrcSet = cloudinarySrcSet(site.assets.roundSymbol, [48, 72, 96, 144, 192]);
+const horizontalLogoSrc = cloudinaryUrl(site.assets.horizontalLogo, { width: 280 });
+const horizontalLogoSrcSet = cloudinarySrcSet(site.assets.horizontalLogo, [180, 240, 320, 440]);
+
+const heroMessage =
+  'Olá, Dr. Natan. Vim pelo site e gostaria de iniciar um atendimento confidencial.';
+const finalMessage =
+  'Olá, Dr. Natan. Vim pelo site e gostaria de apresentar minha situação para verificar a possibilidade de atendimento.';
+const whatsappHeroHref = `${site.whatsapp.href}?text=${encodeURIComponent(heroMessage)}`;
+const whatsappFinalHref = `${site.whatsapp.href}?text=${encodeURIComponent(finalMessage)}`;
+const linkedinUrl = import.meta.env.PUBLIC_LINKEDIN_URL || null;
+const situationIcons = ['handcuffs', 'file-text', 'search', 'scale', 'users', 'message-circle'];
+const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
+---
+
+<BaseLayout>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="site-header" data-header>
+    <div class="site-header__bar container">
+      <a class="brand brand--compact" href="#inicio" aria-label="Voltar ao início">
+        <img
+          src={roundLogoSrc}
+          srcset={roundLogoSrcSet}
+          sizes="56px"
+          width="1080"
+          height="1080"
+          alt=""
+          decoding="async"
+          class="brand__mark"
+        />
+        <span>{site.shortName}</span>
+      </a>
+
+      <a class="brand brand--wide" href="#inicio" aria-label="Voltar ao início">
+        <img
+          src={horizontalLogoSrc}
+          srcset={horizontalLogoSrcSet}
+          sizes="(min-width: 1024px) 240px, 180px"
+          width="1080"
+          height="360"
+          alt="Natan Siqueira"
+          decoding="async"
+        />
+      </a>
+
+      <nav class="desktop-nav" aria-label="Navegação principal">
+        {site.navLinks.slice(0, 7).map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+
+      <div class="site-header__actions">
+        <a
+          class="button button--primary button--desktop"
+          href={whatsappHeroHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-event="click_whatsapp_nav"
+          data-event-source="navbar"
+        >
+          <Icon name="message-circle" class="icon" />
+          Falar agora
+        </a>
+        <button
+          class="menu-button"
+          type="button"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          data-menu-toggle
+        >
+          <Icon name="menu" class="icon" />
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" hidden data-menu-drawer>
+      <div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+        <div class="mobile-menu__top">
+          <a class="brand" href="#inicio" data-menu-link>
+            <img
+              src={roundLogoSrc}
+              srcset={roundLogoSrcSet}
+              sizes="48px"
+              width="1080"
+              height="1080"
+              alt=""
+              decoding="async"
+              class="brand__mark"
+            />
+            <span>{site.shortName}</span>
+          </a>
+          <button class="menu-button" type="button" aria-label="Fechar menu" data-menu-close>
+            <Icon name="x" class="icon" />
+          </button>
+        </div>
+
+        <nav class="mobile-menu__nav" aria-label="Navegação mobile">
+          {site.navLinks.map((link) => <a href={link.href} data-menu-link>{link.label}</a>)}
+        </nav>
+
+        <div class="mobile-menu__footer">
+          <a
+            class="button button--primary"
+            href={whatsappHeroHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-event="click_whatsapp_nav"
+            data-event-source="mobile_menu"
+          >
+            <Icon name="message-circle" class="icon" />
+            Falar com o advogado
+          </a>
+          <a
+            class="button button--secondary"
+            href={site.instagram.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-event="click_instagram"
+            data-event-source="mobile_menu"
+          >
+            <Icon name="instagram" class="icon" />
+            {site.instagram.display}
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section id="inicio" class="hero-section" aria-labelledby="hero-title">
+      <div class="hero-section__media" aria-hidden="true">
+        <img
+          src={heroSrc}
+          srcset={heroSrcSet}
+          sizes="100vw"
+          width="4846"
+          height="3225"
+          alt=""
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+      <div class="hero-section__shade" aria-hidden="true"></div>
+      <div class="container hero-section__content" data-reveal>
+        <p class="eyebrow">Advocacia Criminal</p>
+        <h1 id="hero-title">
+          Defesa criminal <span>técnica e estratégica</span> quando cada decisão importa.
+        </h1>
+        <p class="hero-section__support">Atuação responsável e atendimento confidencial.</p>
+        <div class="hero-section__actions">
+          <a
+            class="button button--primary button--large"
+            href={whatsappHeroHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-event="click_whatsapp_hero"
+            data-event-source="hero"
+          >
+            <Icon name="message-circle" class="icon" />
+            Falar com o advogado
+          </a>
+          <a class="button button--secondary button--large" href="#quiz">
+            <Icon name="user" class="icon" />
+            Apresentar minha situação
+          </a>
+        </div>
+        <p class="microcopy">
+          <Icon name="lock" class="icon icon--sm" />
+          Confidencial <span aria-hidden="true">•</span> {site.registration}
+        </p>
+      </div>
+    </section>
+
+    <MarqueeBand items={site.authorityRoller} label="Princípios de atuação" />
+
+    <section id="quiz" class="section section--navy section--quiz" aria-labelledby="quiz-title">
+      <div class="container quiz-layout">
+        <div class="section-heading section-heading--left" data-reveal>
+          <p class="eyebrow">Entenda por onde começar</p>
+          <h2 id="quiz-title">Conte brevemente o que está acontecendo</h2>
+          <p>Responda três perguntas rápidas. Você revisa tudo antes de abrir o WhatsApp.</p>
+        </div>
+
+        <form class="quiz-card" data-quiz data-whatsapp-number={site.whatsapp.number} novalidate data-reveal>
+          <div class="quiz-card__header">
+            <button class="quiz-card__back" type="button" data-quiz-prev>
+              <Icon name="chevron-left" class="icon" />
+              Voltar
+            </button>
+            <span class="quiz-card__count" data-quiz-counter>1 de 4</span>
+          </div>
+          <div class="quiz-progress" aria-hidden="true">
+            <span data-quiz-progress></span>
+          </div>
+          <div class="quiz-status" aria-live="polite" data-quiz-status></div>
+
+          <div class="quiz-step" data-quiz-step="0">
+            <fieldset>
+              <legend>{quiz.steps[0].title}</legend>
+              <p class="quiz-step__hint">Ao tocar, você avança automaticamente.</p>
+              <div class="quiz-options quiz-options--six">
+                {quiz.steps[0].type === 'choice' &&
+                  quiz.steps[0].options.map((option, index) => (
+                    <label class="quiz-option" data-quiz-choice={`situation:${option}`}>
+                      <input type="radio" name="situation" value={option} data-quiz-input />
+                      <span class="quiz-option__icon">
+                        <Icon name={situationIcons[index]} class="icon" />
+                      </span>
+                      <span>{option}</span>
+                    </label>
+                  ))}
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="quiz-step" data-quiz-step="1" hidden>
+            <fieldset>
+              <legend>{quiz.steps[1].title}</legend>
+              <p class="quiz-step__hint">A resposta ajuda a contextualizar o primeiro contato.</p>
+              <div class="quiz-options">
+                {quiz.steps[1].type === 'choice' &&
+                  quiz.steps[1].options.map((option, index) => (
+                    <label class="quiz-option" data-quiz-choice={`timing:${option}`}>
+                      <input type="radio" name="timing" value={option} data-quiz-input />
+                      <span class="quiz-option__icon">
+                        <Icon name={timingIcons[index]} class="icon" />
+                      </span>
+                      <span>{option}</span>
+                    </label>
+                  ))}
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="quiz-step" data-quiz-step="2" hidden>
+            <fieldset>
+              <legend>{quiz.steps[2].title}</legend>
+              <label class="field">
+                <span>Cidade e estado</span>
+                <input
+                  type="text"
+                  name="location"
+                  data-quiz-input
+                  autocomplete="address-level2"
+                  minlength="3"
+                  placeholder={quiz.steps[2].type === 'text' ? quiz.steps[2].placeholder : ''}
+                  required
+                />
+              </label>
+              <p class="field__error" data-quiz-error hidden>Informe ao menos cidade e estado.</p>
+            </fieldset>
+          </div>
+
+          <div class="quiz-step quiz-step--review" data-quiz-step="3" hidden>
+            <h3>{quiz.steps[3].title}</h3>
+            <ul class="review-list">
+              <li>
+                <span>Situação</span>
+                <strong data-quiz-summary="situation">-</strong>
+                <button type="button" data-quiz-edit="0">Editar</button>
+              </li>
+              <li>
+                <span>Quando aconteceu</span>
+                <strong data-quiz-summary="timing">-</strong>
+                <button type="button" data-quiz-edit="1">Editar</button>
+              </li>
+              <li>
+                <span>Cidade e estado</span>
+                <strong data-quiz-summary="location">-</strong>
+                <button type="button" data-quiz-edit="2">Editar</button>
+              </li>
+            </ul>
+            <div class="quiz-step__actions">
+              <a
+                class="button button--primary"
+                href={site.whatsapp.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-quiz-whatsapp
+              >
+                <Icon name="message-circle" class="icon" />
+                Abrir WhatsApp
+              </a>
+              <button class="button button--secondary" type="button" data-quiz-reset>
+                <Icon name="refresh" class="icon" />
+                Reiniciar
+              </button>
+            </div>
+            <p class="microcopy">
+              <Icon name="lock" class="icon icon--sm" />
+              Nenhum envio representa contratação automática.
+            </p>
+          </div>
+
+          <div class="quiz-card__footer">
+            <button class="button button--secondary" type="button" data-quiz-next>
+              Avançar
+              <Icon name="arrow-right" class="icon" />
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="especialista" class="section section--cream specialist-section" aria-labelledby="specialist-title">
+      <div class="container specialist-grid" data-reveal>
+        <p class="eyebrow">Advogado especialista</p>
+        <h2 id="specialist-title">Dr. Natan Siqueira</h2>
+        <figure class="specialist-media">
+          <img
+            src={specialistSrc}
+            srcset={specialistSrcSet}
+            sizes="(min-width: 960px) 42vw, 100vw"
+            width="2916"
+            height="4381"
+            alt="Dr. Natan Siqueira lendo material jurídico"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <p class="specialist-copy">
+          Atuação dedicada ao Direito Criminal, com pesquisa em Criminologia e Direito Penal.
+        </p>
+        <ul class="specialist-bullets" aria-label="Pontos da atuação profissional">
+          <li><Icon name="scale" class="icon" /> Direito Criminal</li>
+          <li><Icon name="search" class="icon" /> Criminologia e Direito Penal</li>
+          <li><Icon name="user" class="icon" /> Análise individualizada</li>
+          <li><Icon name="shield" class="icon" /> Atendimento confidencial</li>
+          <li><Icon name="message-circle" class="icon" /> Comunicação transparente</li>
+          <li><Icon name="clipboard" class="icon" /> {site.registration}</li>
+        </ul>
+        {linkedinUrl ? <LinkedInCard href={linkedinUrl} /> : null}
+        <a
+          class="button button--primary button--wide"
+          href={whatsappFinalHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-event="click_whatsapp_specialist"
+          data-event-source="specialist"
+        >
+          <Icon name="message-circle" class="icon" />
+          Falar com o Dr. Natan
+        </a>
+      </div>
+    </section>
+
+    <section id="pilares" class="section section--navy-secondary pillars-section" aria-labelledby="pillars-title">
+      <div class="container" data-reveal>
+        <div class="section-heading section-heading--left">
+          <p class="eyebrow">Pilares da atuação</p>
+          <h2 id="pillars-title">Princípios que orientam cada atendimento</h2>
+        </div>
+        <div class="pillars-grid">
+          {site.pillars.map((pillar, index) => (
+            <article class="pillar-card" data-reveal style={`--delay:${index * 70}ms`}>
+              <span class="pillar-card__number">{pillar.number}</span>
+              <Icon name={['shield', 'gavel', 'message-circle', 'user'][index]} class="icon pillar-card__icon" />
+              <h3>{pillar.title}</h3>
+              <p>{pillar.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <MarqueeBand items={site.transitionRoller} label="Mensagem de transição" variant="secondary" />
+
+    <section id="areas" class="section section--navy practice-section" aria-labelledby="areas-title">
+      <div class="container" data-reveal>
+        <div class="section-heading section-heading--left">
+          <p class="eyebrow">Situações de atuação</p>
+          <h2 id="areas-title">Situações que podem exigir acompanhamento criminal</h2>
+        </div>
+      </div>
+      <div class="carousel" data-carousel aria-roledescription="carousel" aria-label="Situações de atuação">
+        <div class="carousel__track" data-carousel-track tabindex="0">
+          {site.practiceAreas.map((area, index) => (
+            <article class="practice-card" data-carousel-slide>
+              <div class="practice-card__icon">
+                <Icon name={area.icon} class="icon" />
+              </div>
+              <span class="practice-card__count">{String(index + 1).padStart(2, '0')}</span>
+              <h3>{area.title}</h3>
+              <p>{area.description}</p>
+              <a href="#quiz" data-event="click_practice_area">
+                Saiba mais
+                <Icon name="arrow-right" class="icon icon--sm" />
+              </a>
+            </article>
+          ))}
+        </div>
+        <div class="carousel__controls container" aria-label="Controles do carrossel">
+          <button type="button" data-carousel-prev aria-label="Ver situação anterior">
+            <Icon name="chevron-left" class="icon" />
+          </button>
+          <div class="carousel__dots" aria-label="Indicador de posição">
+            {site.practiceAreas.map((area, index) => (
+              <button
+                type="button"
+                data-carousel-dot={index}
+                aria-label={`Ir para ${area.title}`}
+                aria-current={index === 0 ? 'true' : 'false'}
+              ></button>
+            ))}
+          </div>
+          <button type="button" data-carousel-next aria-label="Ver próxima situação">
+            <Icon name="chevron-right" class="icon" />
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="urgente" class="section section--navy urgent-section" aria-labelledby="urgent-title">
+      <div class="container urgent-card" data-reveal>
+        <div class="urgent-card__icon">
+          <Icon name="message-circle" class="icon" />
+        </div>
+        <div>
+          <h2 id="urgent-title">A situação aconteceu agora?</h2>
+          <p>Prisões, buscas, apreensões, depoimentos e audiências podem exigir atenção imediata.</p>
+        </div>
+        <a
+          class="button button--primary"
+          href={whatsappFinalHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-event="click_whatsapp_urgent"
+          data-event-source="urgent"
+        >
+          <Icon name="message-circle" class="icon" />
+          Falar pelo WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <section id="processo" class="section section--cream process-section" aria-labelledby="process-title">
+      <div class="container process-grid">
+        <div class="section-heading section-heading--left" data-reveal>
+          <p class="eyebrow">Como funciona o atendimento</p>
+          <h2 id="process-title">Do primeiro contato à orientação inicial</h2>
+          <p>O processo organiza as informações antes de qualquer medida ou decisão.</p>
+        </div>
+        <ol class="timeline" data-timeline>
+          {site.process.map((step, index) => (
+            <li class="timeline__step" data-timeline-step data-index={index}>
+              <span class="timeline__marker">{step.number}</span>
+              <div class="timeline__content" data-reveal>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section id="assinatura" class="latin-signature" aria-label="Assinatura institucional">
+      <div class="container">
+        <p>Lux in tenebris lucet</p>
+        <span>A luz brilha nas trevas</span>
+      </div>
+    </section>
+
+    <section id="faq" class="section section--navy-secondary faq-section" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-heading section-heading--left" data-reveal>
+          <p class="eyebrow">Perguntas frequentes</p>
+          <h2 id="faq-title">Dúvidas comuns respondidas</h2>
+        </div>
+        <div class="faq-list" data-faq data-reveal>
+          {site.faqs.map((item, index) => (
+            <article class="faq-item" data-faq-item>
+              <h3>
+                <button
+                  type="button"
+                  data-faq-button
+                  aria-expanded={index === 0 ? 'true' : 'false'}
+                  aria-controls={`faq-panel-${index}`}
+                >
+                  <span class="faq-item__question">
+                    <Icon name="message-circle" class="icon" />
+                    {item.question}
+                  </span>
+                  <Icon name="chevron-down" class="icon faq-item__chevron" />
+                </button>
+              </h3>
+              <div
+                class="faq-item__panel"
+                id={`faq-panel-${index}`}
+                data-faq-panel
+                aria-hidden={index === 0 ? 'false' : 'true'}
+              >
+                <div>
+                  <p>{item.answer}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="final" class="section section--final final-section" aria-labelledby="final-title">
+      <div class="container final-card" data-reveal>
+        <p class="eyebrow">Atendimento confidencial</p>
+        <h2 id="final-title">Apresente sua situação diretamente ao advogado</h2>
+        <p>Informe brevemente o que aconteceu, onde ocorreu e em qual fase o caso se encontra.</p>
+        <div class="final-card__actions">
+          <a
+            class="button button--primary button--large"
+            href={whatsappFinalHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-event="click_whatsapp_final"
+            data-event-source="final"
+          >
+            <Icon name="message-circle" class="icon" />
+            Falar com o Dr. Natan
+          </a>
+          <a class="button button--secondary button--large" href="#quiz" data-quiz-reset-link>
+            <Icon name="clipboard" class="icon" />
+            Refazer o questionário
+          </a>
+        </div>
+        <p class="microcopy">
+          <Icon name="lock" class="icon icon--sm" />
+          O envio da mensagem não representa contratação automática.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-labelledby="footer-title">
+    <div class="container site-footer__grid">
+      <div class="site-footer__brand">
+        <img
+          src={horizontalLogoSrc}
+          srcset={horizontalLogoSrcSet}
+          sizes="220px"
+          width="1080"
+          height="360"
+          alt="Natan Siqueira"
+          loading="lazy"
+          decoding="async"
+        />
+        <h2 id="footer-title">{site.shortName}</h2>
+        <p>{site.profession} <span aria-hidden="true">•</span> {site.registration}</p>
+      </div>
+
+      <nav class="site-footer__nav" aria-label="Links do rodapé">
+        {site.navLinks.slice(0, 7).map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+
+      <div class="site-footer__contact">
+        <a
+          href={site.whatsapp.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-event="click_whatsapp_footer"
+          data-event-source="footer"
+        >
+          <Icon name="message-circle" class="icon" />
+          {site.whatsapp.display}
+        </a>
+        <a
+          href={site.instagram.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-event="click_instagram"
+          data-event-source="footer"
+        >
+          <Icon name="instagram" class="icon" />
+          {site.instagram.display}
+        </a>
+      </div>
+    </div>
+    <div class="container site-footer__legal">
+      <div>
+        {site.legalNotes.map((item) => <span>{item}</span>)}
+      </div>
+      <small>© 2026 Natan Siqueira Advocacia Criminal. Todos os direitos reservados.</small>
+    </div>
+  </footer>
+</BaseLayout>

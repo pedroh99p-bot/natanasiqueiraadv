@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+
+type Props = {
+  href?: string | null;
+};
+
+const { href } = Astro.props as Props;
+---
+
+{
+  href ? (
+    <a
+      class="linkedin-card"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-event="click_linkedin"
+      aria-label="Ver perfil do Dr. Natan Siqueira no LinkedIn, abre em nova aba"
+    >
+      <span class="linkedin-card__mark" aria-hidden="true">in</span>
+      <span class="linkedin-card__content">
+        <strong>Dr. Natan Siqueira</strong>
+        <span>Advogado criminalista e pesquisador</span>
+      </span>
+      <span class="linkedin-card__action">
+        Ver perfil
+        <Icon name="external" class="icon icon--sm" />
+      </span>
+    </a>
+  ) : null
+}

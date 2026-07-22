@@ -1,0 +1,15 @@
+{
+  "name": "Dr. Natan Siqueira | Advocacia Criminal",
+  "short_name": "Natan Siqueira",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06131F",
+  "theme_color": "#06131F",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

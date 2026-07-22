@@ -1,0 +1,20 @@
+---
+type Props = {
+  items: readonly string[];
+  label: string;
+  variant?: 'primary' | 'secondary';
+};
+
+const { items, label, variant = 'primary' } = Astro.props as Props;
+---
+
+<section class={`marquee-band marquee-band--${variant}`} aria-label={label}>
+  <div class="marquee-band__track">
+    <div class="marquee-band__group">
+      {items.map((item) => <span>{item}</span>)}
+    </div>
+    <div class="marquee-band__group" aria-hidden="true">
+      {items.map((item) => <span>{item}</span>)}
+    </div>
+  </div>
+</section>
