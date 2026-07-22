@@ -1,10 +1,10 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-const siteUrl = process.env.SITE_URL ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);
+const siteUrl = process.env.SITE_URL ?? 'https://natanasiqueiraadv.vercel.app';
 
 export default defineConfig({
   site: siteUrl,
   output: 'static',
-  integrations: siteUrl ? [sitemap()] : [],
+  integrations: [sitemap()],
 });
