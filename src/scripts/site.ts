@@ -18,6 +18,8 @@ const trackEvent = (name: string, properties: Record<string, string> = {}) => {
   );
 };
 
+const PRELOADER_KEY = 'natan-siqueira-preloader-v1';
+
 const getFocusable = (root: HTMLElement) =>
   Array.from(
     root.querySelectorAll<HTMLElement>(
@@ -68,6 +70,7 @@ const setupMenu = () => {
     drawer.hidden = false;
     document.body.classList.add('menu-is-open');
     setPageInert(true);
+    window.dispatchEvent(new Event('resize'));
     toggle.setAttribute('aria-expanded', 'true');
     requestAnimationFrame(() => {
       drawer.classList.add('is-open');
@@ -80,6 +83,7 @@ const setupMenu = () => {
     drawer.classList.remove('is-open');
     document.body.classList.remove('menu-is-open');
     setPageInert(false);
+    window.dispatchEvent(new Event('resize'));
     toggle.setAttribute('aria-expanded', 'false');
     window.setTimeout(() => {
       drawer.hidden = true;
@@ -456,6 +460,109 @@ const setupTimeline = () => {
   if (steps[0]) activate(steps[0]);
 };
 
+const setupPreloader = () => {
+  const preloader = document.querySelector<HTMLElement>('[data-preloader]');
+  if (!preloader) return;
+
+  const shouldRun = document.documentElement.dataset.preloader === 'run';
+  if (!shouldRun) {
+    preloader.hidden = true;
+    return;
+  }
+
+  const progress = preloader.querySelector<HTMLElement>('[data-preloader-progress]');
+  const heroImage = document.querySelector<HTMLImageElement>('[data-hero-image]');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let finished = false;
+
+  const setProgress = (value: number) => {
+    progress?.style.setProperty('--preloader-progress', `${Math.max(0, Math.min(value, 100))}%`);
+  };
+
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    document.body.classList.remove('is-preloading');
+    preloader.classList.add('is-leaving');
+    window.setTimeout(() => {
+      preloader.hidden = true;
+    }, prefersReducedMotion ? 120 : 420);
+  };
+
+  try {
+    sessionStorage.setItem(PRELOADER_KEY, 'seen');
+  } catch {
+    // Session storage is optional.
+  }
+
+  document.body.classList.add('is-preloading');
+
+  if (prefersReducedMotion) {
+    setProgress(100);
+    window.setTimeout(finish, 120);
+    return;
+  }
+
+  setProgress(24);
+  window.requestAnimationFrame(() => setProgress(38));
+  window.setTimeout(() => setProgress(68), 180);
+  window.setTimeout(() => setProgress(80), 520);
+
+  const fontsReady = document.fonts?.ready?.catch(() => undefined) ?? Promise.resolve();
+  const heroReady = heroImage?.decode ? heroImage.decode().catch(() => undefined) : Promise.resolve();
+  const loadReady =
+    document.readyState === 'complete'
+      ? Promise.resolve()
+      : new Promise<void>((resolve) => window.addEventListener('load', () => resolve(), { once: true }));
+  const safetyTimeout = new Promise<void>((resolve) => window.setTimeout(() => resolve(), 1800));
+
+  Promise.race([Promise.all([fontsReady, heroReady, loadReady]), safetyTimeout]).then(() => {
+    setProgress(100);
+    window.setTimeout(finish, 120);
+  });
+};
+
+const setupFloatingWhatsapp = () => {
+  const button = document.querySelector<HTMLElement>('[data-floating-whatsapp]');
+  if (!button) return;
+
+  const blockers = Array.from(
+    document.querySelectorAll<HTMLElement>('#quiz, #areas, #final, .site-footer'),
+  );
+  const threshold = 180;
+  let blocked = false;
+
+  const isKeyboardOpen = () => {
+    const viewport = window.visualViewport;
+    if (!viewport) return false;
+    return window.innerHeight - viewport.height > 160;
+  };
+
+  const updateVisibility = () => {
+    const visible =
+      window.scrollY > threshold && !blocked && !isKeyboardOpen() && !document.body.classList.contains('menu-is-open');
+    button.classList.toggle('is-visible', visible);
+  };
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        blocked = entries.some((entry) => entry.isIntersecting);
+        updateVisibility();
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.12 },
+    );
+
+    blockers.forEach((blocker) => observer.observe(blocker));
+  }
+
+  window.addEventListener('scroll', updateVisibility, { passive: true });
+  window.addEventListener('resize', updateVisibility);
+  window.visualViewport?.addEventListener('resize', updateVisibility);
+  window.visualViewport?.addEventListener('scroll', updateVisibility);
+  updateVisibility();
+};
+
 const setupReveals = () => {
   const items = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
   if (!items.length) return;
@@ -475,7 +582,7 @@ const setupReveals = () => {
         observer.unobserve(entry.target);
       });
     },
-    { rootMargin: '0px 0px -12% 0px', threshold: 0.18 },
+    { rootMargin: '0px 0px -6% 0px', threshold: 0.1 },
   );
 
   items.forEach((item) => observer.observe(item));
@@ -484,11 +591,13 @@ const setupReveals = () => {
 ready(() => {
   document.documentElement.classList.add('js');
   setupTrackedEvents();
+  setupPreloader();
   setupHeader();
   setupMenu();
   setupQuiz();
   setupCarousel();
   setupFaq();
   setupTimeline();
+  setupFloatingWhatsapp();
   setupReveals();
 });

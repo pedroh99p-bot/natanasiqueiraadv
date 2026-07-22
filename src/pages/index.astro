@@ -152,16 +152,18 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           loading="eager"
           fetchpriority="high"
           decoding="async"
+          data-hero-image
         />
       </div>
-      <div class="hero-section__shade" aria-hidden="true"></div>
-      <div class="container hero-section__content" data-reveal>
+      <div class="hero-section__shade hero-section__shade--copy" aria-hidden="true"></div>
+      <div class="hero-section__shade hero-section__shade--base" aria-hidden="true"></div>
+      <div class="container hero-section__content" data-reveal data-reveal-group="hero">
         <p class="eyebrow">Advocacia Criminal</p>
         <h1 id="hero-title">
           Defesa criminal <span>técnica e estratégica</span> quando cada decisão importa.
         </h1>
         <p class="hero-section__support">Atuação responsável e atendimento confidencial.</p>
-        <div class="hero-section__actions">
+        <div class="hero-section__actions" data-reveal-group="hero-actions">
           <a
             class="button button--primary button--large"
             href={whatsappHeroHref}
@@ -173,7 +175,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
             <Icon name="message-circle" class="icon" />
             Falar com o advogado
           </a>
-          <a class="button button--secondary button--large" href="#quiz">
+          <a class="button button--secondary button--large" href="#quiz" data-event="click_quiz_from_hero">
             <Icon name="user" class="icon" />
             Apresentar minha situação
           </a>
@@ -195,7 +197,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           <p>Responda três perguntas rápidas. Você revisa tudo antes de abrir o WhatsApp.</p>
         </div>
 
-        <form class="quiz-card" data-quiz data-whatsapp-number={site.whatsapp.number} novalidate data-reveal>
+        <form class="quiz-card" data-quiz data-whatsapp-number={site.whatsapp.number} novalidate data-reveal data-reveal-group="quiz">
           <div class="quiz-card__header">
             <button class="quiz-card__back" type="button" data-quiz-prev>
               <Icon name="chevron-left" class="icon" />
@@ -284,7 +286,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
                 <button type="button" data-quiz-edit="2">Editar</button>
               </li>
             </ul>
-            <div class="quiz-step__actions">
+            <div class="quiz-step__actions" data-reveal-group="quiz-actions">
               <a
                 class="button button--primary"
                 href={site.whatsapp.href}
@@ -317,7 +319,15 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
     </section>
 
     <section id="especialista" class="section section--cream specialist-section" aria-labelledby="specialist-title">
-      <div class="container specialist-grid" data-reveal>
+      <div
+        class:list={[
+          'container',
+          'specialist-grid',
+          linkedinUrl ? 'specialist-grid--with-linkedin' : '',
+        ]}
+        data-reveal
+        data-reveal-group="specialist"
+      >
         <p class="eyebrow">Advogado especialista</p>
         <h2 id="specialist-title">Dr. Natan Siqueira</h2>
         <figure class="specialist-media">
@@ -364,7 +374,7 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           <p class="eyebrow">Pilares da atuação</p>
           <h2 id="pillars-title">Princípios que orientam cada atendimento</h2>
         </div>
-        <div class="pillars-grid">
+        <div class="pillars-grid" data-reveal-group="pillars">
           {site.pillars.map((pillar, index) => (
             <article class="pillar-card" data-reveal style={`--delay:${index * 70}ms`}>
               <span class="pillar-card__number">{pillar.number}</span>
@@ -374,6 +384,10 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
             </article>
           ))}
         </div>
+        <a class="section-link" href="#quiz" data-event="click_quiz_from_pillars">
+          Apresentar minha situação
+          <Icon name="arrow-right" class="icon icon--sm" />
+        </a>
       </div>
     </section>
 
@@ -421,6 +435,12 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
             <Icon name="chevron-right" class="icon" />
           </button>
         </div>
+        <div class="container practice-section__cta">
+          <a class="section-link" href="#quiz" data-event="click_quiz_from_practice">
+            Não encontrou sua situação? Apresente o contexto
+            <Icon name="arrow-right" class="icon icon--sm" />
+          </a>
+        </div>
       </div>
     </section>
 
@@ -453,8 +473,12 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
           <p class="eyebrow">Como funciona o atendimento</p>
           <h2 id="process-title">Do primeiro contato à orientação inicial</h2>
           <p>O processo organiza as informações antes de qualquer medida ou decisão.</p>
+          <a class="section-link" href="#quiz" data-event="click_quiz_from_process">
+            Iniciar atendimento
+            <Icon name="arrow-right" class="icon icon--sm" />
+          </a>
         </div>
-        <ol class="timeline" data-timeline>
+        <ol class="timeline" data-timeline data-reveal data-reveal-group="timeline">
           {site.process.map((step, index) => (
             <li class="timeline__step" data-timeline-step data-index={index}>
               <span class="timeline__marker">{step.number}</span>
@@ -480,8 +504,12 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
         <div class="section-heading section-heading--left" data-reveal>
           <p class="eyebrow">Perguntas frequentes</p>
           <h2 id="faq-title">Dúvidas comuns respondidas</h2>
+          <a class="section-link" href="#quiz" data-event="click_quiz_from_faq">
+            Apresentar uma situação
+            <Icon name="arrow-right" class="icon icon--sm" />
+          </a>
         </div>
-        <div class="faq-list" data-faq data-reveal>
+        <div class="faq-list" data-faq data-reveal data-reveal-group="faq">
           {site.faqs.map((item, index) => (
             <article class="faq-item" data-faq-item>
               <h3>
@@ -515,11 +543,11 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
     </section>
 
     <section id="final" class="section section--final final-section" aria-labelledby="final-title">
-      <div class="container final-card" data-reveal>
+      <div class="container final-card" data-reveal data-reveal-group="final">
         <p class="eyebrow">Atendimento confidencial</p>
         <h2 id="final-title">Apresente sua situação diretamente ao advogado</h2>
         <p>Informe brevemente o que aconteceu, onde ocorreu e em qual fase o caso se encontra.</p>
-        <div class="final-card__actions">
+        <div class="final-card__actions" data-reveal-group="final-actions">
           <a
             class="button button--primary button--large"
             href={whatsappFinalHref}
@@ -531,7 +559,12 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
             <Icon name="message-circle" class="icon" />
             Falar com o Dr. Natan
           </a>
-          <a class="button button--secondary button--large" href="#quiz" data-quiz-reset-link>
+          <a
+            class="button button--secondary button--large"
+            href="#quiz"
+            data-quiz-reset-link
+            data-event="restart_quiz_final"
+          >
             <Icon name="clipboard" class="icon" />
             Refazer o questionário
           </a>
@@ -544,21 +577,36 @@ const timingIcons = ['message-circle', 'lock', 'clipboard', 'refresh'];
     </section>
   </main>
 
+  <a
+    class="floating-whatsapp"
+    href={site.whatsapp.href}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Falar com o Dr. Natan pelo WhatsApp"
+    data-event="click_whatsapp_floating"
+    data-event-source="floating"
+    data-floating-whatsapp
+  >
+    <Icon name="whatsapp" class="icon" />
+    <span>WhatsApp</span>
+  </a>
+
   <footer class="site-footer" aria-labelledby="footer-title">
     <div class="container site-footer__grid">
       <div class="site-footer__brand">
         <img
           src={horizontalLogoSrc}
           srcset={horizontalLogoSrcSet}
-          sizes="220px"
+          sizes="(min-width: 1200px) 300px, (min-width: 768px) 260px, 220px"
           width="1080"
           height="360"
           alt="Natan Siqueira"
           loading="lazy"
           decoding="async"
         />
-        <h2 id="footer-title">{site.shortName}</h2>
-        <p>{site.profession} <span aria-hidden="true">•</span> {site.registration}</p>
+        <p class="site-footer__brandline" id="footer-title">
+          {site.profession} <span aria-hidden="true">•</span> {site.registration}
+        </p>
       </div>
 
       <nav class="site-footer__nav" aria-label="Links do rodapé">
